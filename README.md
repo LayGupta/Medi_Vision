@@ -1,73 +1,83 @@
-Risk Dashboard
-A full-stack web dashboard for patient risk prediction.
-Built with React on the frontend and Flask + scikit-learn/LightGBM on the backend.
+# Risk Dashboard
 
-Features
-Cohort view of patients with computed risk scores (Low/Medium/High).
+A full-stack web dashboard for patient risk prediction. Built with **React** on the frontend and **Flask + scikit-learn/LightGBM** on the backend.
 
-Patient detail view with vitals trends, risk category, and contributing factors.
+## Features
 
-Add new patients directly from the dashboard.
+* Cohort view of patients with computed **risk scores** (Low/Medium/High)
+* Patient detail view with vitals trends, risk category, and contributing factors
+* Add new patients directly from the dashboard
+* Uses a trained ML model (`risk_prediction_model.pkl`) for predictions
+* Handles missing values — backend fills defaults and computes z-scores for features
 
-Uses a trained ML model (risk_prediction_model.pkl) for predictions.
+## Project Structure
 
-Handles missing values — backend fills defaults and computes z-scores for features.
-
-Project Structure
-text
+```
 risk-dashboard/
-├─ backend/                  # Flask API + model wrapper
+├─ backend/                        # Flask API + model wrapper
 │  ├─ app.py
 │  ├─ predictor.py
 │  ├─ features.json
-│  ├─ risk_prediction_model.pkl   # (tracked with Git LFS)
+│  ├─ risk_prediction_model.pkl    # (tracked with Git LFS)
 │  ├─ patients.json
 │  └─ zscore_stats.json
-└─ frontend/                 # React dashboard
+└─ frontend/                       # React dashboard
    ├─ src/
    │  ├─ pages/Dashboard.js
    │  ├─ components/
    │  └─ services/api.js
    ├─ package.json
    └─ .env.example
-Getting Started
-1. Clone the repository
-bash
+```
+
+## Getting Started
+
+### 1. Clone the repository
+
+```bash
 git clone https://github.com/<your-username>/risk-dashboard.git
 cd risk-dashboard
-2. Backend Setup
-bash
+```
+
+### 2. Backend Setup
+
+```bash
 cd backend
 python -m venv .venv
 
 # Activate virtual environment
-# Windows: .venv\Scripts\activate
-# macOS/Linux: source .venv/bin/activate
+# Windows:
+.venv\Scripts\activate
+# macOS/Linux:
+source .venv/bin/activate
 
 pip install -r requirements.txt
 python app.py
-Check API health:
-http://localhost:8000/api/health → {"status": "ok"}
+```
 
-3. Frontend Setup
-bash
+Check API health: `http://localhost:8000/api/health` → `{"status": "ok"}`
+
+### 3. Frontend Setup
+
+```bash
 cd frontend
 cp .env.example .env
 npm install
 npm start
-Open the dashboard at: http://localhost:3000
+```
 
-API Overview
-GET /api/patients → list of patients with risk scores
+Open the dashboard at: **http://localhost:3000**
 
-POST /api/patients → add or update a patient
+## API Overview
 
-POST /api/predict_explain → predict risk and return feature attributions
+* `GET /api/patients` → list of patients with risk scores
+* `POST /api/patients` → add or update a patient
+* `POST /api/predict_explain` → predict risk and return feature attributions
+* `GET /api/patients/:id/vitals` → vitals history series
 
-GET /api/patients/:id/vitals → vitals history series
+### Example Request: Add Patient
 
-Example Request: Add Patient
-json
+```json
 {
   "id": 101,
   "last_checkin": "2025-09-08",
@@ -99,12 +109,25 @@ json
     "cancer": 0
   }
 }
-Tech Stack
-Frontend: React (with hooks)
+```
 
-Backend: Flask, Flask-CORS
+## Tech Stack
 
-Machine Learning: scikit-learn, LightGBM
+* **Frontend:** React (with hooks)
+* **Backend:** Flask, Flask-CORS
+* **Machine Learning:** scikit-learn, LightGBM
+* **Storage:** JSON (patients, model metadata, z-score stats)
 
-Storage: JSON (patients, model metadata, z-score stats)
+## Prerequisites
 
+* Python 3.8+
+* Node.js 14+
+* npm or yarn
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
