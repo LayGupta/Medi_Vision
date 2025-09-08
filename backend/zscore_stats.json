@@ -1,0 +1,20 @@
+{
+  "age": { "mean": 55.0, "std": 15.0 },
+
+  "heartrate_mean":   { "mean": 80.0,  "std": 12.0 },
+  "resp_rate_mean":   { "mean": 16.0,  "std": 3.0 },
+  "spo2_mean":        { "mean": 97.0,  "std": 2.0 },
+  "temp_mean":        { "mean": 98.6,  "std": 0.7 },
+  "sbp_mean":         { "mean": 120.0, "std": 15.0 },
+  "dbp_mean":         { "mean": 80.0,  "std": 10.0 },
+
+  "glucose_mean":     { "mean": 110.0, "std": 30.0 },
+  "creatinine_mean":  { "mean": 1.0,   "std": 0.3 },
+  "wbc_mean":         { "mean": 7.0,   "std": 2.0 },
+  "hemoglobin_mean":  { "mean": 14.0,  "std": 1.5 },
+  "platelets_mean":   { "mean": 250.0, "std": 75.0 },
+  "sodium_mean":      { "mean": 139.0, "std": 3.0 },
+  "potassium_mean":   { "mean": 4.2,   "std": 0.4 },
+  "lactate_mean":     { "mean": 1.2,   "std": 0.5 },
+  "bun_mean":         { "mean": 15.0,  "std": 5.0 }
+}
