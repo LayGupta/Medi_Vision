@@ -17,7 +17,8 @@ Built with **React** on the frontend and **Flask + scikit-learn/LightGBM** on th
 
 ##  Demo
 
-![Dashboard screenshot](./docs/screenshot.png)
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/3eb47288-7b45-4349-b9be-5e62b58f7dcd" />
+
 
 ---
 
