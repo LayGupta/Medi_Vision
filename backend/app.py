@@ -17,21 +17,22 @@ from predictor import (
 HERE = os.path.dirname(os.path.abspath(__file__))
 PATIENTS_FILE = os.path.join(HERE, "patients.json")
 ZSCORE_FILE = os.path.join(HERE, "zscore_stats.json")
-
 # ---------- App & CORS ----------
 app = Flask(__name__)
+
+# Read allowed origins from env (comma-separated), fallback to common dev origins
+origins_env = os.getenv("ALLOWED_ORIGINS", "")
+origins = [o.strip() for o in origins_env.split(",") if o.strip()] or [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
 CORS(
     app,
-    resources={r"/api/*": {"origins": ["http://localhost:3000", "http://127.0.0.1:3000"]}},
+    resources={r"/api/*": {"origins": origins}},
     supports_credentials=False,
 )
 
-@app.after_request
-def add_cors_headers(resp):
-    # allow common AJAX headers and verbs for dev
-    resp.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-    resp.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
-    return resp
 
 # ---------- Helpers ----------
 def load_patients():
@@ -270,7 +271,9 @@ def predict_route():
         return jsonify(result)
     except Exception as e:
         return jsonify({"error": str(e)}), 400
-
+    
 # ---------- Main ----------
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000, debug=True)
+    port = int(os.environ.get("PORT", 8000))
+    app.run(host="0.0.0.0", port=port, debug=False)
+
