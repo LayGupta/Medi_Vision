@@ -23,7 +23,7 @@ ZSCORE_FILE = os.path.join(HERE, "zscore_stats.json")
 app = Flask(__name__)
 CORS(
     app,
-    resources={r"/api/*": {"origins": ["http://localhost:3000", "http://127.0.0.1:3000"]}},
+    resources={r"/api/*": {"origins": "*"}},
     supports_credentials=False,
 )
 
@@ -271,7 +271,3 @@ def predict_route():
         return jsonify(result)
     except Exception as e:
         return jsonify({"error": str(e)}), 400
-
-# ---------- Main ----------
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000, debug=True)
