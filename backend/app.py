@@ -1,3 +1,4 @@
+
 # backend/app.py
 import os
 import json
@@ -20,25 +21,15 @@ ZSCORE_FILE = os.path.join(HERE, "zscore_stats.json")
 
 # ---------- App & CORS ----------
 app = Flask(__name__)
-
-# Allow origins from env or default to localhost (for dev)
-# Example env: CORS_ORIGINS="https://medi-vision-1.onrender.com"
-allowed_origins = [
-    o.strip() for o in os.getenv(
-        "CORS_ORIGINS",
-        "http://localhost:3000,http://127.0.0.1:3000"
-    ).split(",") if o.strip()
-]
-
 CORS(
     app,
-    resources={r"/api/*": {"origins": allowed_origins}},
+    resources={r"/api/*": {"origins": ["http://localhost:3000", "http://127.0.0.1:3000"]}},
     supports_credentials=False,
 )
 
 @app.after_request
 def add_cors_headers(resp):
-    # allow common AJAX headers and verbs (helps preflight)
+    # allow common AJAX headers and verbs for dev
     resp.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
     resp.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
     return resp
@@ -145,10 +136,6 @@ def expand_basic_to_full(core: dict, date_str: str = None) -> dict:
     return full
 
 # ---------- Routes ----------
-@app.get("/")
-def root():
-    return jsonify({"ok": True, "hint": "Use /api/* endpoints"})
-
 @app.get("/api/health")
 def health():
     return jsonify({"status": "ok"})
@@ -188,7 +175,7 @@ def get_patients():
 @app.get("/api/patients/<int:pid>")
 def get_patient(pid):
     pts = load_patients()
-    p = next((x for x in pts if p.get("id") == pid) for p in pts) if pts else None
+    p = next((x for x in pts if x.get("id") == pid), None)
     if not p:
         return jsonify({"error": "Patient not found"}), 404
     return jsonify(p)
@@ -287,7 +274,4 @@ def predict_route():
 
 # ---------- Main ----------
 if __name__ == "__main__":
-    # Local dev only; Render runs via gunicorn and $PORT
-    port = int(os.getenv("PORT", "8000"))
-    debug = os.getenv("FLASK_DEBUG", "0") == "1"
-    app.run(host="0.0.0.0", port=port, debug=debug)
+    app.run(host="0.0.0.0", port=8000, debug=True)
